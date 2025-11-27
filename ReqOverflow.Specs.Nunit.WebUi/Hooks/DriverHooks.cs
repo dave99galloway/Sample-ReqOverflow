@@ -8,8 +8,5 @@ namespace ReqOverflow.Specs.Nunit.WebUi.Hooks;
 public class DriverHooks(WebDriverService driverService)
 {
     [AfterScenario]
-    public void AfterScenario()
-    {
-        driverService.QuitAllDrivers();
-    }
+    public void AfterScenario() => driverService.QuitAllDrivers();
 }

@@ -16,7 +16,7 @@ public class LoginSteps
         wait.IgnoreExceptionTypes(typeof(AssertionException));
         wait.Until(driver =>
         {
-            Assert.That(driver.Title, Does.Contain("page").IgnoreCase);
+            Assert.That(driver.Title, Does.Contain(page).IgnoreCase);
             return true;
         });
     }

@@ -1,31 +1,24 @@
-namespace ReqOverflow.Specs.Nunit.WebUi.Drivers;
+using System.Collections.Concurrent;
+using Reqnroll;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 
+namespace ReqOverflow.Specs.Nunit.WebUi.Drivers;
+
+[Binding]
 public class WebDriverService
 {
-    private readonly Dictionary<string, IWebDriver> _userDrivers = 
-        new ();
+    private readonly ConcurrentDictionary<string, IWebDriver> _userDrivers =
+        new();
 
-    public IWebDriver GetDriverForUser(string userName)
-    {
-        if (_userDrivers.TryGetValue(userName, out IWebDriver driver))
+    public IWebDriver GetDriverForUser(string userName) =>
+        _userDrivers.GetOrAdd(userName, _ =>
         {
-            Console.WriteLine($"[DriverFactory] Returning cached driver for user: {userName}");
-            return driver;
-        }
-
-        Console.WriteLine($"[DriverFactory] Creating new ChromeDriver session for user: {userName}");
-        
-        var options = new ChromeOptions();
-        
-        options.AddArgument("--start-maximized"); 
-        
-        driver = new ChromeDriver(options); 
-        
-        _userDrivers.Add(userName, driver);
-        return driver;
-    }
+            Console.WriteLine($"[DriverFactory] Creating new ChromeDriver session for user: {userName}");
+            var options = new ChromeOptions();
+            options.AddArgument("--start-maximized");
+            return new ChromeDriver(options);
+        });
 
     public void QuitAllDrivers()
     {
@@ -42,6 +35,7 @@ public class WebDriverService
                 Console.WriteLine($"Error quitting driver for {user}: {ex.Message}");
             }
         }
+
         _userDrivers.Clear();
     }
 }
