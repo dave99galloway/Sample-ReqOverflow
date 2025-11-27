@@ -10,16 +10,21 @@ public class WebDriverService
 {
     private readonly ConcurrentDictionary<string, IWebDriver> _userDrivers =
         new();
-
+    private readonly ConcurrentDictionary<IWebDriver, string> _driverUsers =
+        new();
     public IWebDriver GetDriverForUser(string userName) =>
         _userDrivers.GetOrAdd(userName, _ =>
         {
             Console.WriteLine($"[DriverFactory] Creating new ChromeDriver session for user: {userName}");
             var options = new ChromeOptions();
             options.AddArgument("--start-maximized");
-            return new ChromeDriver(options);
+            var driver = new ChromeDriver(options);
+            _driverUsers[driver] = userName;
+            return driver;
         });
 
+    public string GetDriverUser( IWebDriver driver) => _driverUsers[driver];
+    
     public void QuitAllDrivers()
     {
         foreach (var user in _userDrivers.Keys)

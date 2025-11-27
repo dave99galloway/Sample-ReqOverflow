@@ -1,5 +1,6 @@
 using OpenQA.Selenium;
 using ReqOverflow.Specs.Nunit.WebUi.Drivers;
+using SeleniumExtras.WaitHelpers;
 
 namespace ReqOverflow.Specs.Nunit.WebUi.Pages;
 
@@ -11,28 +12,24 @@ public class HomePage(IWebDriver driver)
 
     public LoginPage OpenLoginPage()
     {
-        driver.Wait().Until(_ => Login).Click();
+        driver.Wait().Until(_ => ExpectedConditions.ElementToBeClickable(Login)).Invoke(driver).Click();
         return new LoginPage(driver);
     }
 }
 
 public static class HomePageFactory
 {
+    private static readonly Predicate<IWebDriver> TitlePredicate = driver =>   driver.Title.Contains("home", StringComparison.InvariantCultureIgnoreCase);
     public static HomePage OnHomePage(this IWebDriver driver)
-    {   
+    {
         var homePage = new HomePage(driver);
-        driver.Wait().UntilAssertionPasses(_ =>
-        {
-            Assert.That(driver.Title, Does.Contain("home").IgnoreCase);
-            return driver.Title;
-        });
+        driver.Wait().Until(_ => TitlePredicate);
         return homePage;
     }
-    
+
     public static HomePage OpenHomePage(this IWebDriver driver)
     {
-        
-        if (!driver.Title.Contains("home", StringComparison.InvariantCultureIgnoreCase))
+        if (!TitlePredicate(driver))
             driver.Navigate().GoToUrl("http://localhost:5000");
         return driver.OnHomePage();
     }
