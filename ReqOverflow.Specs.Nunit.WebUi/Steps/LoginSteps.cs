@@ -1,5 +1,6 @@
 using OpenQA.Selenium;
 using Reqnroll;
+using ReqOverflow.Specs.Nunit.WebUi.Contexts;
 using ReqOverflow.Specs.Nunit.WebUi.Drivers;
 using ReqOverflow.Specs.Nunit.WebUi.Pages;
 
@@ -25,9 +26,10 @@ public class LoginSteps(ScenarioContext scenarioContext)
     public static void GivenHasOpenedTheLoginPage(IWebDriver actor) => actor.OpenLoginPage();
 
     [When("{string} logs in with password {string}")]
-    public void WhenLogsInWithPassword(IWebDriver actor, string password)
-    {
-        var service = scenarioContext.ScenarioContainer.Resolve<WebDriverService>();
-        actor.OnLoginPage().Login(username: service.GetDriverUser(actor), password: password);
-    }
+    public void WhenLogsInWithPassword(IWebDriver actor, string password) => actor.OnLoginPage()
+        .Login(username: scenarioContext.GetDriverUser(actor), password: password);
+
+    [Then("{string} can see they are the logged in user")]
+    public void ThenCanSeeTheyAreTheLoggedInUser(IWebDriver actor) =>
+        actor.OnHomePage().AssertLoggedInUserIs(scenarioContext.GetDriverUser(actor));
 }

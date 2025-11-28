@@ -10,3 +10,4 @@ Feature: Can Authenticate to site
         #todo centralise passwords so they don't need to be repeated and publicly visible...
         When "Marvin" logs in with password "1234"
         Then "Marvin" is on the Home page
+        And "Marvin" can see they are the logged in user

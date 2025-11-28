@@ -8,18 +8,32 @@ public class HomePage(IWebDriver driver)
 {
     // for increased reliability make this a func that returns an IWebElement so it can "never" be stale.
     // as we get more complex pass a root element in from the parent, define sa  root for the page and make sure these methods and eleemtns are found from those
+    // some frameworks wrap the IWebElement and a string description to make it easier to identify which elements are being used/have failed. may also store the By separately for more options around using supported methods for By insted of element
+    
     private IWebElement Login => driver.FindElement(By.CssSelector("li > a[href='/Login']"));
+
+    private IWebElement LoggedInUser => driver.FindElement(By.CssSelector("span#LoggedInUser"));
 
     public LoginPage OpenLoginPage()
     {
-        driver.Wait().Until(_ => ExpectedConditions.ElementToBeClickable(Login)).Invoke(driver).Click();
+        driver.Wait().Until(_ => driver.GetElementIf(ExpectedConditions.ElementToBeClickable(Login))).Click();
         return new LoginPage(driver);
+    }
+
+    public HomePage AssertLoggedInUserIs(string expectedUser)
+    {
+        Assert.That(
+            driver.Wait().Until(_ => LoggedInUser.Displayed && LoggedInUser.Text == "expectedUser" ? LoggedInUser : null)
+                .Text, Is.EqualTo(expectedUser));
+        return this;
     }
 }
 
 public static class HomePageFactory
 {
-    private static readonly Predicate<IWebDriver> TitlePredicate = driver =>   driver.Title.Contains("home", StringComparison.InvariantCultureIgnoreCase);
+    private static readonly Predicate<IWebDriver> TitlePredicate =
+        driver => driver.Title.Contains("home", StringComparison.InvariantCultureIgnoreCase);
+
     public static HomePage OnHomePage(this IWebDriver driver)
     {
         var homePage = new HomePage(driver);
