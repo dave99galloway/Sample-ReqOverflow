@@ -23,7 +23,7 @@ public class HomePage(IWebDriver driver)
     public HomePage AssertLoggedInUserIs(string expectedUser)
     {
         Assert.That(
-            driver.Wait().Until(_ => LoggedInUser.Displayed && LoggedInUser.Text == "expectedUser" ? LoggedInUser : null)
+            driver.Wait().Until(_ => LoggedInUser.Displayed && LoggedInUser.Text == expectedUser ? LoggedInUser : null)
                 .Text, Is.EqualTo(expectedUser));
         return this;
     }
