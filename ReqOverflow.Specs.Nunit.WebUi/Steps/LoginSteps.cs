@@ -32,4 +32,17 @@ public class LoginSteps(ScenarioContext scenarioContext)
     [Then("{string} can see they are the logged in user")]
     public void ThenCanSeeTheyAreTheLoggedInUser(IWebDriver actor) =>
         actor.OnHomePage().AssertLoggedInUserIs(scenarioContext.GetDriverUser(actor));
+
+    [Given("{string} has logged in")]
+    public void GivenHasLoggedIn(IWebDriver actor) => actor.OpenHomePage().OpenLoginPage()
+        .Login(username: scenarioContext.GetDriverUser(actor),
+            //just hard code for now - can get data for users from somewhere else later
+            password: "1234");
+
+    [When("{string} logs out")]
+    public static void WhenLogsOut(IWebDriver actor) => actor.OnHomePage().LogOutUser();
+
+    [Then("{string} can see the logged in user is anonymous")]
+    public void ThenCanSeeTheLoggedInUserIsAnonymous(IWebDriver actor) =>
+        actor.OnHomePage().AssertLoggedInUserIs("anonymous");
 }

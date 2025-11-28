@@ -15,9 +15,26 @@ public class WebDriverService
     public IWebDriver GetDriverForUser(string userName) =>
         _userDrivers.GetOrAdd(userName, _ =>
         {
+            var profileBaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), 
+                "Library", "Application Support", "Google", "Chrome");
             Console.WriteLine($"[DriverFactory] Creating new ChromeDriver session for user: {userName}");
             var options = new ChromeOptions();
             options.AddArgument("--start-maximized");
+       
+            // 1. Disable the "Save Password" prompt/feature
+            options.AddUserProfilePreference("credentials_enable_service", false);
+
+// 2. Disable the password manager security warnings
+            options.AddUserProfilePreference("password_manager_enabled", false);
+            options.AddArgument("--disable-web-security");
+            options.AddArgument("disable-infobars");
+            
+            // 1. Point to the base User Data Directory
+            options.AddArgument($"user-data-dir={profileBaseDir}");
+
+// 2. Specify the exact profile folder name
+            options.AddArgument("profile-directory=Profile 1");
+            //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(50);
             var driver = new ChromeDriver(options);
             _driverUsers[driver] = userName;
             return driver;

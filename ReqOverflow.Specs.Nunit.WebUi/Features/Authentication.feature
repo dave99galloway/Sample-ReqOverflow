@@ -11,3 +11,8 @@ Feature: Can Authenticate to site
         When "Marvin" logs in with password "1234"
         Then "Marvin" is on the Home page
         And "Marvin" can see they are the logged in user
+
+    Scenario: Marvin can log out
+        Given "Marvin" has logged in
+        When "Marvin" logs out
+        Then "Marvin" can see the logged in user is anonymous

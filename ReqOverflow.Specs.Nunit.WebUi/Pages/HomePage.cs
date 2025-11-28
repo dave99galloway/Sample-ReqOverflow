@@ -1,6 +1,6 @@
 using OpenQA.Selenium;
 using ReqOverflow.Specs.Nunit.WebUi.Drivers;
-using SeleniumExtras.WaitHelpers;
+using static SeleniumExtras.WaitHelpers.ExpectedConditions;
 
 namespace ReqOverflow.Specs.Nunit.WebUi.Pages;
 
@@ -12,11 +12,13 @@ public class HomePage(IWebDriver driver)
     
     private IWebElement Login => driver.FindElement(By.CssSelector("li > a[href='/Login']"));
 
-    private IWebElement LoggedInUser => driver.FindElement(By.CssSelector("span#LoggedInUser"));
+    private IWebElement LoggedInUser => driver.FindElement(By.CssSelector("div#UserInfo span"));
+    
+    private IWebElement LogOut => driver.FindElement(By.LinkText("Logout"));
 
     public LoginPage OpenLoginPage()
     {
-        driver.Wait().Until(_ => driver.GetElementIf(ExpectedConditions.ElementToBeClickable(Login))).Click();
+        driver.Wait().Until(_ => driver.GetElementIf(ElementToBeClickable(Login))).Click();
         return new LoginPage(driver);
     }
 
@@ -25,6 +27,13 @@ public class HomePage(IWebDriver driver)
         Assert.That(
             driver.Wait().Until(_ => LoggedInUser.Displayed && LoggedInUser.Text == expectedUser ? LoggedInUser : null)
                 .Text, Is.EqualTo(expectedUser));
+        return this;
+    }
+
+    public HomePage LogOutUser()
+    {
+        driver.Wait().Until(_ => driver.GetElementIf(ElementToBeClickable(LogOut))).Click();
+
         return this;
     }
 }
@@ -44,7 +53,7 @@ public static class HomePageFactory
     public static HomePage OpenHomePage(this IWebDriver driver)
     {
         if (!TitlePredicate(driver))
-            driver.Navigate().GoToUrl("http://localhost:5000");
+            driver.Navigate().GoToUrl("http://127.0.0.1:5000");
         return driver.OnHomePage();
     }
 }
