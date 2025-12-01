@@ -46,7 +46,7 @@ public static class LoginPageFactory
     public static LoginPage OpenLoginPage(this IWebDriver driver)
     {
         if (!TitlePredicate(driver))
-            driver.Navigate().GoToUrl("http://127.0.0.1:5000/Login");
+            driver.Navigate().GoToUrl("http://localhost:5000/Login");
         return driver.OnLoginPage();
     }
 }

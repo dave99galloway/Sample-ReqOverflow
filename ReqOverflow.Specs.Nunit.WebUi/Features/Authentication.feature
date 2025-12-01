@@ -8,7 +8,7 @@ Feature: Can Authenticate to site
     Scenario: Marvin can login
         Given "Marvin" has opened the Login page
         #todo centralise passwords so they don't need to be repeated and publicly visible...
-        When "Marvin" logs in with password "1234"
+        When "Marvin" logs in with password "r)pF0*50oBs4"
         Then "Marvin" is on the Home page
         And "Marvin" can see they are the logged in user
 

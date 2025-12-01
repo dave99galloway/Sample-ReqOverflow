@@ -36,6 +36,9 @@ public class HomePage(IWebDriver driver)
 
         return this;
     }
+    
+    public bool IsLoggedIn => LogOut.Displayed;
+    
 }
 
 public static class HomePageFactory
@@ -53,7 +56,7 @@ public static class HomePageFactory
     public static HomePage OpenHomePage(this IWebDriver driver)
     {
         if (!TitlePredicate(driver))
-            driver.Navigate().GoToUrl("http://127.0.0.1:5000");
+            driver.Navigate().GoToUrl("http://localhost:5000");
         return driver.OnHomePage();
     }
 }

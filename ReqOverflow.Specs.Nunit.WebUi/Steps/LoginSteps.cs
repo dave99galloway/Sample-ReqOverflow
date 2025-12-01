@@ -37,7 +37,7 @@ public class LoginSteps(ScenarioContext scenarioContext)
     public void GivenHasLoggedIn(IWebDriver actor) => actor.OpenHomePage().OpenLoginPage()
         .Login(username: scenarioContext.GetDriverUser(actor),
             //just hard code for now - can get data for users from somewhere else later
-            password: "1234");
+            password: "r)pF0*50oBs4");
 
     [When("{string} logs out")]
     public static void WhenLogsOut(IWebDriver actor) => actor.OnHomePage().LogOutUser();

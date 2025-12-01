@@ -15,8 +15,8 @@ public class WebDriverService
     public IWebDriver GetDriverForUser(string userName) =>
         _userDrivers.GetOrAdd(userName, _ =>
         {
-            var profileBaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal), 
-                "Library", "Application Support", "Google", "Chrome");
+            // var profileBaseDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.UserProfile), 
+            //     "Library", "Application\\ Support", "Google", "Chrome");
             Console.WriteLine($"[DriverFactory] Creating new ChromeDriver session for user: {userName}");
             var options = new ChromeOptions();
             options.AddArgument("--start-maximized");
@@ -29,11 +29,11 @@ public class WebDriverService
             options.AddArgument("--disable-web-security");
             options.AddArgument("disable-infobars");
             
-            // 1. Point to the base User Data Directory
-            options.AddArgument($"user-data-dir={profileBaseDir}");
+            // // 1. Point to the base User Data Directory
+            // options.AddArgument($"user-data-dir={profileBaseDir}");
 
-// 2. Specify the exact profile folder name
-            options.AddArgument("profile-directory=Profile 1");
+// // 2. Specify the exact profile folder name
+//             options.AddArgument("profile-directory=Profile 1");
             //driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(50);
             var driver = new ChromeDriver(options);
             _driverUsers[driver] = userName;
@@ -42,13 +42,24 @@ public class WebDriverService
 
     public string GetDriverUser( IWebDriver driver) => _driverUsers[driver];
     
-    public void QuitAllDrivers()
+    public void QuitAllDrivers(params Action<IWebDriver>[] actions)
     {
         foreach (var user in _userDrivers.Keys)
         {
             try
             {
                 var driver = _userDrivers[user];
+                foreach (Action<IWebDriver> action in actions)
+                {
+                    try
+                    {
+                        action(driver);
+                    }
+                    catch (Exception e)
+                    {
+                        Console.WriteLine(e);
+                    }
+                }
                 driver.Quit();
                 driver.Dispose();
             }
