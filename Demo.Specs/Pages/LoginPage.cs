@@ -1,12 +1,13 @@
 using System;
 using OpenQA.Selenium;
 using SimpleSeleniumFramework.Pages;
+using SimpleSeleniumFramework.Support;
 
 namespace Demo.Specs.Pages
 {
     public class LoginPage : PageObject
     {
-        public LoginPage(Func<IWebElement> rootResolver) : base(rootResolver)
+        protected LoginPage(BrowserUser user, Func<IWebElement>? rootResolver = null) : base(user, rootResolver)
         {
         }
 

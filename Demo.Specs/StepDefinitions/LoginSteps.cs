@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Reqnroll;
 using SimpleSeleniumFramework.Support;
+using SimpleSeleniumFramework.Pages;
 using Demo.Specs.Pages;
 using OpenQA.Selenium;
 
@@ -18,8 +19,8 @@ namespace Demo.Specs.StepDefinitions
         [When(@"(.*) logs in with ""(.*)"" and ""(.*)""")]
         public void WhenUserLogsIn(BrowserUser user, string username, string password)
         {
-            // Resolve root: Body
-            var loginPage = new LoginPage(() => user.Driver.FindElement(By.TagName("body")));
+            // Resolve root: Body (default)
+            var loginPage = user.Page<LoginPage>();
             
             loginPage.UsernameField.SendKeys(username);
             loginPage.PasswordField.SendKeys(password);
@@ -29,7 +30,7 @@ namespace Demo.Specs.StepDefinitions
         [Then(@"(.*) should see the secure area")]
         public void ThenUserShouldSeeTheSecureArea(BrowserUser user)
         {
-            var securePage = new SecureAreaPage(() => user.Driver.FindElement(By.TagName("body")));
+            var securePage = user.Page<SecureAreaPage>();
             
             Assert.That(securePage.Header.Text, Does.Contain("Secure Area"));
             Assert.That(securePage.LogoutButton.Displayed, Is.True);

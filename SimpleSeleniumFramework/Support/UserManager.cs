@@ -1,10 +1,12 @@
+using Microsoft.Extensions.Configuration;
 using SimpleSeleniumFramework.Drivers;
 
 namespace SimpleSeleniumFramework.Support
 {
-    public class UserManager(DriverFactory driverFactory) : IDisposable
+    public class UserManager(DriverFactory driverFactory, IConfiguration configuration) : IDisposable
     {
         private readonly DriverFactory _driverFactory = driverFactory;
+        private readonly IConfiguration _configuration = configuration;
         private readonly Dictionary<string, BrowserUser> _users = [];
 
         public BrowserUser GetUser(string name)
@@ -12,7 +14,7 @@ namespace SimpleSeleniumFramework.Support
             if (!_users.TryGetValue(name, out BrowserUser? value))
             {
                 var driver = _driverFactory.CreateDriver();
-                value = new BrowserUser(name, driver);
+                value = new BrowserUser(name, driver, _configuration);
                 _users[name] = value;
             }
             return value;

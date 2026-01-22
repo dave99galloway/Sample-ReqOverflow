@@ -111,7 +111,54 @@ The following files constitute the "engine" of the framework.
 *   **`Support/UserTransformations.cs`**:
     *   **IMPORTANT:** This class must be `public` (not abstract) and have a `public` constructor.
     *   Uses `[StepArgumentTransformation]` to turn `Given "Alice" ...` into a `BrowserUser` object.
-*   **`Pages/PageObject.cs`**: Base class using `Func<IWebElement>` for lazy root resolution.
+### Page Objects
+Create `Pages/PageObject.cs`.
+- **Constructor:** Accepts `BrowserUser` (required) and an optional `Func<IWebElement>` for root resolution.
+- **Factory:** Includes a static extension method `user.Page<T>()` to simplify instantiation in step definitions. **The factory caches instances per user/scenario.**
+- **Base Class:**
+    - Stores `BrowserUser` and `IConfiguration` (via user).
+    - Defaults root resolution to `body` if not provided.
+    - Exposes `Find(By)` helper.
+
+```csharp
+public abstract class PageObject(BrowserUser user, Func<IWebElement>? rootResolver = null)
+{
+    // ...
+}
+
+public static class PageFactory 
+{
+    public static T Page<T>(this BrowserUser user) ...
+}
+```
+
+### Writing Page Objects
+Inherit from `PageObject` and use a `protected` constructor.
+
+```csharp
+public class LoginPage : PageObject
+{
+    protected LoginPage(BrowserUser user, Func<IWebElement>? rootResolver = null) 
+        : base(user, rootResolver)
+    {
+    }
+    
+    public IWebElement Username => Find(By.Id("username"));
+}
+```
+
+### Using in Step Definitions
+Do not instantiate pages with `new`. Use the `Page<T>()` factory method on the `BrowserUser` object.
+
+```csharp
+[When(@"(.*) logs in...")]
+public void WhenUserLogsIn(BrowserUser user) 
+{
+    var loginPage = user.Page<LoginPage>();
+    loginPage.Username.SendKeys("...");
+}
+```
+
 
 **References / Inspiration:**
 *   **Reqnroll/SpecFlow Context Injection:** [Reqnroll Documentation](https://docs.reqnroll.net/latest/automation/context-injection.html)
