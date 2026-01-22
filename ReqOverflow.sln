@@ -1,4 +1,4 @@
-
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29609.76
@@ -19,6 +19,12 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		LICENSE = LICENSE
 		README.md = README.md
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleSeleniumFramework", "SimpleSeleniumFramework\SimpleSeleniumFramework.csproj", "{2E228D0A-A807-4367-B0FA-7B9477B30447}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ReqOverflow.Specs.Nunit.Web", "ReqOverflow.Specs.Nunit.Web\ReqOverflow.Specs.Nunit.Web.csproj", "{3B2D5E21-9B04-48AE-978D-76653F09CEAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Demo.Specs", "Demo.Specs\Demo.Specs.csproj", "{A549270D-F9F6-432C-9951-BACE92E9837B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -46,6 +52,18 @@ Global
 		{EFD3D295-60F6-44E0-87F4-5205E1B7EF84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EFD3D295-60F6-44E0-87F4-5205E1B7EF84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EFD3D295-60F6-44E0-87F4-5205E1B7EF84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E228D0A-A807-4367-B0FA-7B9477B30447}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E228D0A-A807-4367-B0FA-7B9477B30447}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E228D0A-A807-4367-B0FA-7B9477B30447}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E228D0A-A807-4367-B0FA-7B9477B30447}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3B2D5E21-9B04-48AE-978D-76653F09CEAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3B2D5E21-9B04-48AE-978D-76653F09CEAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3B2D5E21-9B04-48AE-978D-76653F09CEAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3B2D5E21-9B04-48AE-978D-76653F09CEAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A549270D-F9F6-432C-9951-BACE92E9837B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A549270D-F9F6-432C-9951-BACE92E9837B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A549270D-F9F6-432C-9951-BACE92E9837B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A549270D-F9F6-432C-9951-BACE92E9837B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
