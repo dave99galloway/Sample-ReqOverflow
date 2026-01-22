@@ -4,14 +4,9 @@ using OpenQA.Selenium.Chrome;
 
 namespace SimpleSeleniumFramework.Drivers
 {
-    public class DriverFactory
+    public class DriverFactory(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-
-        public DriverFactory(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
+        private readonly IConfiguration _configuration = configuration;
 
         public IWebDriver CreateDriver()
         {

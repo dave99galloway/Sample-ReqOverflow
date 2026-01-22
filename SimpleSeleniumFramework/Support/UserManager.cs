@@ -1,27 +1,21 @@
-using System;
-using System.Collections.Generic;
 using SimpleSeleniumFramework.Drivers;
 
 namespace SimpleSeleniumFramework.Support
 {
-    public class UserManager : IDisposable
+    public class UserManager(DriverFactory driverFactory) : IDisposable
     {
-        private readonly DriverFactory _driverFactory;
-        private readonly Dictionary<string, BrowserUser> _users = new Dictionary<string, BrowserUser>();
-
-        public UserManager(DriverFactory driverFactory)
-        {
-            _driverFactory = driverFactory;
-        }
+        private readonly DriverFactory _driverFactory = driverFactory;
+        private readonly Dictionary<string, BrowserUser> _users = [];
 
         public BrowserUser GetUser(string name)
         {
-            if (!_users.ContainsKey(name))
+            if (!_users.TryGetValue(name, out BrowserUser? value))
             {
                 var driver = _driverFactory.CreateDriver();
-                _users[name] = new BrowserUser(name, driver);
+                value = new BrowserUser(name, driver);
+                _users[name] = value;
             }
-            return _users[name];
+            return value;
         }
 
         public IEnumerable<BrowserUser> ActiveUsers => _users.Values;
@@ -35,12 +29,13 @@ namespace SimpleSeleniumFramework.Support
                     user.Driver.Quit();
                     user.Driver.Dispose();
                 }
-                catch
+                catch (Exception ex)
                 {
-                    // Ignore errors during disposal
+                    Console.Error.WriteLine($"Exception disposong of user {user.Name}. Message: {ex.Message}");
                 }
             }
             _users.Clear();
+            GC.SuppressFinalize(this);
         }
     }
 }

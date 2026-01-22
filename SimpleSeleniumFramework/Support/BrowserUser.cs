@@ -3,16 +3,10 @@ using OpenQA.Selenium;
 
 namespace SimpleSeleniumFramework.Support
 {
-    public class BrowserUser
+    public class BrowserUser(string name, IWebDriver driver)
     {
-        public string Name { get; }
-        public IWebDriver Driver { get; }
-        public Dictionary<string, object> Context { get; } = new Dictionary<string, object>();
-
-        public BrowserUser(string name, IWebDriver driver)
-        {
-            Name = name;
-            Driver = driver;
-        }
+        public string Name { get; } = name;
+        public IWebDriver Driver { get; } = driver;
+        public Dictionary<string, object> Context { get; } = [];
     }
 }

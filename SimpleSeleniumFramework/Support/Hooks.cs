@@ -10,14 +10,9 @@ using SimpleSeleniumFramework.Drivers;
 namespace SimpleSeleniumFramework.Support
 {
     [Binding]
-    public class DependencyRegistrationHooks
+    public class DependencyRegistrationHooks(IObjectContainer container)
     {
-        private readonly IObjectContainer _container;
-
-        public DependencyRegistrationHooks(IObjectContainer container)
-        {
-            _container = container;
-        }
+        private readonly IObjectContainer _container = container;
 
         [BeforeScenario(Order = 0)]
         public void RegisterDependencies()
@@ -37,16 +32,10 @@ namespace SimpleSeleniumFramework.Support
     }
 
     [Binding]
-    public class ScenarioLifecycleHooks
+    public class ScenarioLifecycleHooks(UserManager userManager, ScenarioContext scenarioContext)
     {
-        private readonly UserManager _userManager;
-        private readonly ScenarioContext _scenarioContext;
-
-        public ScenarioLifecycleHooks(UserManager userManager, ScenarioContext scenarioContext)
-        {
-            _userManager = userManager;
-            _scenarioContext = scenarioContext;
-        }
+        private readonly UserManager _userManager = userManager;
+        private readonly ScenarioContext _scenarioContext = scenarioContext;
 
         [AfterScenario]
         public void TearDown()

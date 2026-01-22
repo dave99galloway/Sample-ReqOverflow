@@ -3,19 +3,11 @@ using Reqnroll;
 namespace SimpleSeleniumFramework.Support
 {
     [Binding]
-    public class UserTransformations
+    public class UserTransformations(UserManager userManager)
     {
-        private readonly UserManager _userManager;
-
-        public UserTransformations(UserManager userManager)
-        {
-            _userManager = userManager;
-        }
+        private readonly UserManager _userManager = userManager;
 
         [StepArgumentTransformation]
-        public BrowserUser TransformUser(string name)
-        {
-            return _userManager.GetUser(name);
-        }
+        public BrowserUser TransformUser(string name) => _userManager.GetUser(name);
     }
 }
