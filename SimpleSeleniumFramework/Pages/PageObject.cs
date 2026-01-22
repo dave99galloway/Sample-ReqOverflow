@@ -11,4 +11,5 @@ namespace SimpleSeleniumFramework.Pages
 
         protected IWebElement Find(By locator) => Root.FindElement(locator);
     }
+
 }

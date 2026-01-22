@@ -21,7 +21,7 @@ public static class QuestionSteps
   public static void WhenSubmitsAQuestion(BrowserUser user, DataTable dataTable)
   {
     //todo: extract body tag to core framework
-    var questionPage = new QuestionPage(() => user.Driver.FindElement(By.TagName("body")));
+    var questionPage = new QuestionPage(user.FindBodySelector());
     //todo: move to data entry method in page object taking question data
     questionPage.Title.SendKeys("data");
     questionPage.Body.SendKeys("body");
@@ -29,10 +29,11 @@ public static class QuestionSteps
     questionPage.Post.Click();
   }
 
+
   [Then("{string} sees an error")]
   public static void ThenSeesAnError(BrowserUser user)
   {
-    var questionPage = new QuestionPage(() => user.Driver.FindElement(By.TagName("body")));
+    var questionPage = new QuestionPage(user.FindBodySelector());
     Assert.That(questionPage.ErrorMessage.Text, Is.EqualTo("Not logged in"));
   }
 }

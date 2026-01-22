@@ -25,6 +25,7 @@ namespace SimpleSeleniumFramework.Support
             
             var configuration = configBuilder.Build();
 
+            //todo: parse configuration into a type or types so values can be read more safely
             _container.RegisterInstanceAs<IConfiguration>(configuration);
             _container.RegisterTypeAs<DriverFactory, DriverFactory>();
             _container.RegisterTypeAs<UserManager, UserManager>();
