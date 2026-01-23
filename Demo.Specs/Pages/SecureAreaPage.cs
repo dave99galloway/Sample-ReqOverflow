@@ -7,7 +7,7 @@ namespace Demo.Specs.Pages
 {
     public class SecureAreaPage : PageObject
     {
-        protected SecureAreaPage(BrowserUser user, Func<IWebElement>? rootResolver = null) : base(user, rootResolver)
+        public SecureAreaPage(BrowserUser user, Func<IWebElement>? rootResolver = null) : base(user, rootResolver)
         {
         }
 

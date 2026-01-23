@@ -7,7 +7,7 @@ namespace Demo.Specs.Pages
 {
     public class LoginPage : PageObject
     {
-        protected LoginPage(BrowserUser user, Func<IWebElement>? rootResolver = null) : base(user, rootResolver)
+        public LoginPage(BrowserUser user, Func<IWebElement>? rootResolver = null) : base(user, rootResolver)
         {
         }
 

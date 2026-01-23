@@ -1,5 +1,4 @@
 using System;
-using System.Reflection;
 using OpenQA.Selenium;
 using SimpleSeleniumFramework.Support;
 
@@ -24,11 +23,7 @@ namespace SimpleSeleniumFramework.Pages
                 return (T)cachedPage;
             }
 
-            var newPage = (T)Activator.CreateInstance(typeof(T), 
-                BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public, 
-                null, 
-                [user, null], 
-                null)!;
+            var newPage = (T)Activator.CreateInstance(typeof(T), user, null)!;
 
             user.PageCache[typeof(T)] = newPage;
             return newPage;

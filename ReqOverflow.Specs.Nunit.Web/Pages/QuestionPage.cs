@@ -7,7 +7,7 @@ namespace ReqOverflow.Specs.Nunit.Web.Pages
 {
     public class QuestionPage : PageObject
     {
-        protected QuestionPage(BrowserUser user, Func<IWebElement>? rootResolver = null)
+        public QuestionPage(BrowserUser user, Func<IWebElement>? rootResolver = null)
             : base(user, rootResolver ?? (() => user.Driver.FindElement(By.Id("ask"))))
         {
         }
