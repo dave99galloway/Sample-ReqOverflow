@@ -1,5 +1,3 @@
-using Microsoft.Extensions.Configuration;
-using OpenQA.Selenium;
 using Reqnroll;
 using SimpleSeleniumFramework.Pages;
 using SimpleSeleniumFramework.Support;
@@ -14,14 +12,14 @@ public static class QuestionSteps
   public static void GivenIsOnTheQuestionsPage(BrowserUser user) => user.Page<QuestionPage>().Visit();
 
   [When("{string} submits a question")]
-  public static void WhenSubmitsAQuestion(BrowserUser user, DataTable dataTable)
+  public static void WhenSubmitsAQuestion(BrowserUser user, IEnumerable<QuestionData> data)
   {
     var questionPage = user.Page<QuestionPage>();
-    //todo: move to data entry method in page object taking question data
-    questionPage.Title.SendKeys("data");
-    questionPage.Body.SendKeys("body");
-    questionPage.Tags.SendKeys("tag");
-    questionPage.Post.Click();
+    foreach (var question in data)
+    {
+      questionPage.PostQuestion(question);
+    }
+
   }
 
 
@@ -29,6 +27,8 @@ public static class QuestionSteps
   public static void ThenSeesAnError(BrowserUser user)
   {
     var questionPage = user.Page<QuestionPage>();
-    Assert.That(questionPage.ErrorMessage.Text, Is.EqualTo("Not logged in"));
+    //todo: add a transform to create this from a string or table
+    ErrorMessage expected = new(Text: "Not logged in");
+    Assert.That(questionPage.ErrorMessage, Is.EqualTo(expected));
   }
 }

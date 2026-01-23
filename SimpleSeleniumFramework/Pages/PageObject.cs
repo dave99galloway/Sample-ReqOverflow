@@ -12,6 +12,7 @@ namespace SimpleSeleniumFramework.Pages
         protected IWebElement Root => RootResolver();
 
         protected IWebElement Find(By locator) => Root.FindElement(locator);
+        protected static IWebElement Find(Func<IWebElement> resolver, By locator) => resolver().FindElement(locator);
     }
 
     public static class PageFactory

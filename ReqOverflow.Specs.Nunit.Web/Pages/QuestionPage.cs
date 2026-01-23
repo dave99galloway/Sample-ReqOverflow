@@ -1,23 +1,20 @@
 using System;
 using OpenQA.Selenium;
+using ReqOverflow.Specs.Nunit.Web.Steps;
 using SimpleSeleniumFramework.Pages;
 using SimpleSeleniumFramework.Support;
 
 namespace ReqOverflow.Specs.Nunit.Web.Pages
 {
-    public class QuestionPage : PageObject
+    public class QuestionPage(BrowserUser user, Func<IWebElement>? rootResolver = null)
+    : PageObject(user, rootResolver ?? (() => user.Driver.FindElement(By.Id("ask"))))
     {
-        public QuestionPage(BrowserUser user, Func<IWebElement>? rootResolver = null)
-            : base(user, rootResolver ?? (() => user.Driver.FindElement(By.Id("ask"))))
-        {
-        }
+        private IWebElement Title => Find(By.Id("TitleInput"));
+        private IWebElement Body => Find(By.Id("BodyInput"));
+        private IWebElement Tags => Find(By.Id("Tags"));
+        private IWebElement Post => Find(By.Id("PostQuestionButton"));
 
-        public IWebElement Title => Find(By.Id("TitleInput"));
-        public IWebElement Body => Find(By.Id("BodyInput"));
-        public IWebElement Tags => Find(By.Id("Tags"));
-        public IWebElement Post => Find(By.Id("PostQuestionButton"));
-
-        public IWebElement ErrorMessage => Find(By.Id("ErrorMessage"));
+        private IWebElement errorMessage => Find(By.Id("ErrorMessage"));
 
         public QuestionPage Visit()
         {
@@ -25,5 +22,19 @@ namespace ReqOverflow.Specs.Nunit.Web.Pages
             User.Driver.Navigate().GoToUrl($"{baseUrl}/Ask");
             return this;
         }
+
+        public QuestionPage PostQuestion(QuestionData question)
+        {
+            Title.SendKeys(question.Title);
+            Body.SendKeys(question.Body);
+            Tags.SendKeys(question.Tags);
+            Post.Click();
+            return this;
+        }
+        public ErrorMessage ErrorMessage => new(Text: errorMessage.Text);
+    }
+
+    public record ErrorMessage(string Text)
+    {
     }
 }
