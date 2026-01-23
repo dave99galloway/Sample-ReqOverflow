@@ -1,5 +1,6 @@
 using System;
 using OpenQA.Selenium;
+using OpenQA.Selenium.Support.UI;
 using SimpleSeleniumFramework.Support;
 
 namespace SimpleSeleniumFramework.Pages
@@ -9,7 +10,16 @@ namespace SimpleSeleniumFramework.Pages
         protected readonly BrowserUser User = user;
         protected readonly Func<IWebElement> RootResolver = rootResolver ?? user.FindBodySelector();
 
+        private readonly Lazy<WebDriverWait> _wait = new(() =>
+        {
+            var wait = new WebDriverWait(user.Driver, TimeSpan.FromSeconds(10));
+            wait.IgnoreExceptionTypes(typeof(StaleElementReferenceException));
+            return wait;
+        });
+
         protected IWebElement Root => RootResolver();
+
+        protected WebDriverWait Wait => _wait.Value;
 
         protected IWebElement Find(By locator) => Root.FindElement(locator);
         protected static IWebElement Find(Func<IWebElement> resolver, By locator) => resolver().FindElement(locator);
